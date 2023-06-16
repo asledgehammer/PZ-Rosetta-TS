@@ -1,3 +1,7 @@
 /node_modules
 /lib
 node_modules/
+assets/rosetta/json/
+assets/rosetta/patches/**/json/
+**/patch.json
+assets/rosetta/yml/
