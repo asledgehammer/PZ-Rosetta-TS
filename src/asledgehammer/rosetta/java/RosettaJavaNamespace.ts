@@ -21,7 +21,7 @@ export class RosettaJavaNamespace extends RosettaEntity {
     for (const clazzName of Object.keys(raw)) {
       const rawClazz = raw[clazzName];
       let clazz = this.classes[clazzName];
-      if (clazz == undefined) {
+      if (clazz === undefined) {
         clazz = new RosettaJavaClass(clazzName, rawClazz);
       } else {
         clazz.parse(rawClazz);

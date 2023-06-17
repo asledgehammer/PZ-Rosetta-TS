@@ -11,12 +11,12 @@ export class RosettaLuaParameter extends RosettaEntity {
   constructor(raw: { [key: string]: any }) {
     super(raw);
 
-    Assert.assertNonNull(raw['type'], 'raw[type]');
+    Assert.assertNonNull(raw.type, 'raw.type');
 
     this.name = formatName(this.readRequiredString('name'));
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       let type = this.readString('type');
-      if (type == undefined) type = 'any';
+      if (type === undefined) type = 'any';
       this.type = type;
     } else {
       this.type = 'any';
@@ -26,7 +26,7 @@ export class RosettaLuaParameter extends RosettaEntity {
 
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       this.type = this.readRequiredString('type', raw);
     }
   }

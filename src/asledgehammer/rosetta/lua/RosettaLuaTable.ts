@@ -21,32 +21,32 @@ export class RosettaLuaTable extends RosettaEntity {
     this.notes = this.readNotes();
 
     /* (Tables) */
-    if (raw['tables'] !== undefined) {
-      const rawTables: { [key: string]: any } = raw['tables'];
-      for (const name of Object.keys(rawTables)) {
-        const rawTable = rawTables[name];
-        const table = new RosettaLuaTable(name, rawTable);
-        this.tables[table.name] = this.tables[name] = table;
+    if (raw.tables !== undefined) {
+      const rawTables: { [key: string]: any } = raw.tables;
+      for (const name2 of Object.keys(rawTables)) {
+        const rawTable = rawTables[name2];
+        const table = new RosettaLuaTable(name2, rawTable);
+        this.tables[table.name] = this.tables[name2] = table;
       }
     }
 
     /* (Functions) */
-    if (raw['functions'] !== undefined) {
-      const rawFunctions: { [key: string]: any } = raw['functions'];
-      for (const name of Object.keys(rawFunctions)) {
-        const rawFunction = rawFunctions[name];
-        const func = new RosettaLuaFunction(name, rawFunction);
-        this.functions[func.name] = this.functions[name] = func;
+    if (raw.functions !== undefined) {
+      const rawFunctions: { [key: string]: any } = raw.functions;
+      for (const name2 of Object.keys(rawFunctions)) {
+        const rawFunction = rawFunctions[name2];
+        const func = new RosettaLuaFunction(name2, rawFunction);
+        this.functions[func.name] = this.functions[name2] = func;
       }
     }
 
     /* (Values) */
-    if (raw['values'] !== undefined) {
-      const rawValues: { [key: string]: any } = raw['values'];
-      for (const name of Object.keys(rawValues)) {
-        const rawValue = rawValues[name];
-        const value = new RosettaLuaValue(name, rawValue);
-        this.values[value.name] = this.values[name] = value;
+    if (raw.values !== undefined) {
+      const rawValues: { [key: string]: any } = raw.values;
+      for (const name2 of Object.keys(rawValues)) {
+        const rawValue = rawValues[name2];
+        const value = new RosettaLuaValue(name2, rawValue);
+        this.values[value.name] = this.values[name2] = value;
       }
     }
   }
@@ -55,12 +55,12 @@ export class RosettaLuaTable extends RosettaEntity {
     this.notes = this.readNotes(raw);
 
     /* (Tables) */
-    if (raw['tables'] !== undefined) {
-      const rawTables: { [key: string]: any } = raw['tables'];
+    if (raw.tables !== undefined) {
+      const rawTables: { [key: string]: any } = raw.tables;
       for (const name of Object.keys(rawTables)) {
         const rawTable = rawTables[name];
         let table = this.tables[name];
-        if (table == undefined) {
+        if (table === undefined) {
           table = new RosettaLuaTable(name, rawTable);
         } else {
           table.parse(rawTable);
@@ -70,12 +70,12 @@ export class RosettaLuaTable extends RosettaEntity {
     }
 
     /* (Functions) */
-    if (raw['functions'] !== undefined) {
-      const rawFunctions: { [key: string]: any } = raw['functions'];
+    if (raw.functions !== undefined) {
+      const rawFunctions: { [key: string]: any } = raw.functions;
       for (const name of Object.keys(rawFunctions)) {
         const rawFunction = rawFunctions[name];
         let func = this.functions[name];
-        if (func == undefined) {
+        if (func === undefined) {
           func = new RosettaLuaFunction(name, rawFunction);
         } else {
           func.parse(rawFunction);
@@ -85,12 +85,12 @@ export class RosettaLuaTable extends RosettaEntity {
     }
 
     /* (Values) */
-    if (raw['values'] !== undefined) {
-      const rawValues: { [key: string]: any } = raw['values'];
+    if (raw.values !== undefined) {
+      const rawValues: { [key: string]: any } = raw.values;
       for (const name of Object.keys(rawValues)) {
         const rawValue = rawValues[name];
         let value = this.values[name];
-        if (value == undefined) {
+        if (value === undefined) {
           value = new RosettaLuaValue(name, rawValue);
         } else {
           value.parse(rawValue);

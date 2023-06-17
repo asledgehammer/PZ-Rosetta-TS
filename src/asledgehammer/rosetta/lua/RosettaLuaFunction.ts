@@ -29,8 +29,8 @@ export class RosettaLuaFunction extends RosettaEntity {
     this.notes = this.readNotes(raw);
 
     /* PARAMETERS */
-    if (raw['parameters'] !== undefined) {
-      const rawParameters: { [key: string]: any }[] = raw['parameters'];
+    if (raw.parameters !== undefined) {
+      const rawParameters: { [key: string]: any }[] = raw.parameters;
       for (const rawParameter of rawParameters) {
         const parameter = new RosettaLuaParameter(rawParameter);
         this.parameters.push(parameter);
@@ -38,9 +38,9 @@ export class RosettaLuaFunction extends RosettaEntity {
     }
 
     /* RETURNS */
-    if (raw['returns'] === undefined) {
+    if (raw.returns === undefined) {
       throw new Error(`Method does not have returns definition: ${this.name}`);
     }
-    this.returns = new RosettaLuaReturns(raw['returns']);
+    this.returns = new RosettaLuaReturns(raw.returns);
   }
 }

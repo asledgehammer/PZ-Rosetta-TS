@@ -9,13 +9,12 @@ export class RosettaEntity {
   }
 
   readModifiers(raw = this.raw): string[] {
-    if (!raw['modifiers']) return [];
-    return [...raw['modifiers']];
+    if (!raw.modifiers) return [];
+    return [...raw.modifiers];
   }
 
   readString(id: string, raw = this.raw): string | undefined {
-    let value = raw[id];
-    if (value != null) return `${value}`;
+    if (raw[id] != null) return `${raw[id]}`;
   }
 
   readNotes(raw = this.raw): string | undefined {

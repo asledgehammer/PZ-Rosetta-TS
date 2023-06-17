@@ -10,9 +10,9 @@ export class RosettaJavaReturns extends RosettaEntity {
   constructor(raw: { [key: string]: any }) {
     super(raw);
 
-    Assert.assertNonNull(raw['type'], 'raw[type]');
+    Assert.assertNonNull(raw.type, 'raw.type');
 
-    this.type = new RosettaJavaType(raw['type']);
+    this.type = new RosettaJavaType(raw.type);
     this.parse(raw);
   }
 

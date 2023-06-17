@@ -7,13 +7,13 @@ import { RosettaLuaField } from './RosettaLuaField';
 import { RosettaLuaConstructor } from './RosettaLuaConstructor';
 
 export class RosettaLuaClass extends RosettaEntity {
-  readonly __extends: string | undefined;
+  readonly extendz: string | undefined;
   readonly name: string;
 
   readonly functions: { [name: string]: RosettaLuaFunction } = {};
   readonly methods: { [name: string]: RosettaLuaFunction } = {};
   readonly fields: { [name: string]: RosettaLuaField } = {};
-  __constructor: RosettaLuaConstructor | undefined;
+  conztructor: RosettaLuaConstructor | undefined;
   deprecated: boolean = false;
   notes: string | undefined;
 
@@ -23,44 +23,44 @@ export class RosettaLuaClass extends RosettaEntity {
     Assert.assertNonEmptyString(name, 'name');
 
     this.name = formatName(name);
-    this.__extends = this.readString('extends');
+    this.extendz = this.readString('extends');
 
     this.notes = this.readNotes();
     this.deprecated = this.readBoolean('deprecated') === true;
 
     /* (Constructor) */
-    if (raw['constructor'] != undefined) {
-      const rawConstructor = raw['constructor'];
-      this.__constructor = new RosettaLuaConstructor(this, rawConstructor);
+    if (raw.constructor !== undefined) {
+      const rawConstructor = raw.constructor;
+      this.conztructor = new RosettaLuaConstructor(this, rawConstructor);
     }
 
     /* (Methods) */
-    if (raw['methods'] != undefined) {
-      const rawMethods: { [key: string]: any } = raw['methods'];
-      for (const name of Object.keys(rawMethods)) {
-        const rawMethod = rawMethods[name];
-        const method = new RosettaLuaFunction(name, rawMethod);
-        this.methods[name] = this.methods[method.name] = method;
+    if (raw.methods !== undefined) {
+      const rawMethods: { [key: string]: any } = raw.methods;
+      for (const name2 of Object.keys(rawMethods)) {
+        const rawMethod = rawMethods[name2];
+        const method = new RosettaLuaFunction(name2, rawMethod);
+        this.methods[name2] = this.methods[method.name] = method;
       }
     }
 
     /* (Functions) */
-    if (raw['functions'] != undefined) {
-      const rawFunctions: { [key: string]: any } = raw['functions'];
-      for (const name of Object.keys(rawFunctions)) {
-        const rawFunction = rawFunctions[name];
-        const func = new RosettaLuaFunction(name, rawFunction);
-        this.functions[name] = this.functions[func.name] = func;
+    if (raw.functions !== undefined) {
+      const rawFunctions: { [key: string]: any } = raw.functions;
+      for (const name2 of Object.keys(rawFunctions)) {
+        const rawFunction = rawFunctions[name2];
+        const func = new RosettaLuaFunction(name2, rawFunction);
+        this.functions[name2] = this.functions[func.name] = func;
       }
     }
 
     /* (Fields) */
-    if (raw['fields'] != undefined) {
-      const rawFields: { [key: string]: any } = raw['fields'];
-      for (const name of Object.keys(rawFields)) {
-        const rawField = rawFields[name];
-        const field = new RosettaLuaField(name, rawField);
-        this.fields[name] = this.fields[field.name] = field;
+    if (raw.fields !== undefined) {
+      const rawFields: { [key: string]: any } = raw.fields;
+      for (const name2 of Object.keys(rawFields)) {
+        const rawField = rawFields[name2];
+        const field = new RosettaLuaField(name2, rawField);
+        this.fields[name2] = this.fields[field.name] = field;
       }
     }
   }
@@ -70,14 +70,14 @@ export class RosettaLuaClass extends RosettaEntity {
     this.deprecated = this.readBoolean('deprecated', raw) === true;
 
     /* (Constructor) */
-    if (raw['constructor'] != undefined) {
-      const rawConstructor = raw['constructor'];
-      this.__constructor = new RosettaLuaConstructor(this, rawConstructor);
+    if (raw.constructor !== undefined) {
+      const rawConstructor = raw.constructor;
+      this.conztructor = new RosettaLuaConstructor(this, rawConstructor);
     }
 
     /* (Methods) */
-    if (raw['methods'] != undefined) {
-      const rawMethods: { [key: string]: any } = raw['methods'];
+    if (raw.methods !== undefined) {
+      const rawMethods: { [key: string]: any } = raw.methods;
       for (const name of Object.keys(rawMethods)) {
         const rawMethod = rawMethods[name];
         let method = this.methods[name];
@@ -91,13 +91,13 @@ export class RosettaLuaClass extends RosettaEntity {
     }
 
     /* (Functions) */
-    if (raw['functions'] != undefined) {
-      const rawFunctions: { [key: string]: any } = raw['functions'];
+    if (raw.functions !== undefined) {
+      const rawFunctions: { [key: string]: any } = raw.functions;
       for (const name of Object.keys(rawFunctions)) {
         const rawFunction = rawFunctions[name];
         let func = this.functions[name];
         if (func == null) {
-          const func = new RosettaLuaFunction(name, rawFunction);
+          func = new RosettaLuaFunction(name, rawFunction);
           this.functions[name] = this.functions[func.name] = func;
         } else {
           func.parse(rawFunction);
@@ -106,8 +106,8 @@ export class RosettaLuaClass extends RosettaEntity {
     }
 
     /* (Fields) */
-    if (raw['fields'] != undefined) {
-      const rawFields: { [key: string]: any } = raw['fields'];
+    if (raw.fields !== undefined) {
+      const rawFields: { [key: string]: any } = raw.fields;
       for (const name of Object.keys(rawFields)) {
         const rawField = rawFields[name];
         let field = this.fields[name];

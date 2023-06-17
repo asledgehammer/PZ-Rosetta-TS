@@ -14,11 +14,11 @@ export class RosettaJavaField extends RosettaEntity {
     super(raw);
 
     Assert.assertNonEmptyString(name, 'name');
-    Assert.assertNonNull(raw['type'], 'raw[type]');
+    Assert.assertNonNull(raw.type, 'raw.type');
 
     this.name = name;
     this.modifiers = this.readModifiers();
-    this.type = new RosettaJavaType(raw['type']);
+    this.type = new RosettaJavaType(raw.type);
     this.deprecated = this.readBoolean('deprecated') != null;
     this.notes = this.readNotes();
   }

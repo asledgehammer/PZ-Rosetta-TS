@@ -10,9 +10,9 @@ export class RosettaLuaField extends RosettaEntity {
     super(raw);
     Assert.assertNonEmptyString(name, 'name');
     this.name = name;
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       let type = this.readString('type');
-      if (type == undefined) type = 'any';
+      if (type === undefined) type = 'any';
       this.type = type;
     } else {
       this.type = 'any';
@@ -22,7 +22,7 @@ export class RosettaLuaField extends RosettaEntity {
 
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       this.type = this.readRequiredString('type', raw);
     }
   }

@@ -13,7 +13,7 @@ export class RosettaJavaClass extends RosettaEntity {
   readonly methods: { [name: string]: RosettaJavaMethodCluster } = {};
   readonly constructors: RosettaJavaConstructor[] = [];
 
-  readonly __extends: string | undefined;
+  readonly extendz: string | undefined;
   readonly name: string;
   readonly modifiers: string[];
   readonly deprecated: boolean;
@@ -27,7 +27,7 @@ export class RosettaJavaClass extends RosettaEntity {
     Assert.assertNonEmptyString(name, 'name');
 
     this.name = formatName(name);
-    this.__extends = this.readString('extends');
+    this.extendz = this.readString('extends');
     this.modifiers = this.readModifiers();
     this.deprecated = this.readBoolean('deprecated') != null;
     this.javaType = this.readRequiredString('javaType');
@@ -35,23 +35,23 @@ export class RosettaJavaClass extends RosettaEntity {
     this.notes = this.readNotes();
 
     /* FIELDS */
-    if (raw['fields'] !== undefined) {
-      const rawFields: { [key: string]: any } = raw['fields'];
+    if (raw.fields !== undefined) {
+      const rawFields: { [key: string]: any } = raw.fields;
       for (const fieldName of Object.keys(rawFields)) {
         const rawField = rawFields[fieldName];
-        let field = new RosettaJavaField(fieldName, rawField);
+        const field = new RosettaJavaField(fieldName, rawField);
         this.fields[field.name] = this.fields[fieldName] = field;
       }
     }
 
     /* METHODS */
-    if (raw['methods'] !== undefined) {
-      const rawMethods = raw['methods'];
+    if (raw.methods !== undefined) {
+      const rawMethods = raw.methods;
       for (const rawMethod of rawMethods) {
         const method = new RosettaJavaMethod(rawMethod);
         const { name: methodName } = method;
         let cluster: RosettaJavaMethodCluster;
-        if (this.methods[methodName] == undefined) {
+        if (this.methods[methodName] === undefined) {
           cluster = new RosettaJavaMethodCluster(methodName);
           this.methods[methodName] = cluster;
         } else {
@@ -62,8 +62,8 @@ export class RosettaJavaClass extends RosettaEntity {
     }
 
     /* CONSTRUCTORS */
-    if (raw['constructors'] !== undefined) {
-      const rawConstructors = raw['constructors'];
+    if (raw.constructors !== undefined) {
+      const rawConstructors = raw.constructors;
       for (const rawConstructor of rawConstructors) {
         this.constructors.push(new RosettaJavaConstructor(this, rawConstructor));
       }
@@ -74,12 +74,12 @@ export class RosettaJavaClass extends RosettaEntity {
     this.notes = this.readNotes(raw);
 
     /* FIELDS */
-    if (raw['fields'] !== undefined) {
-      const rawFields: { [key: string]: any } = raw['fields'];
+    if (raw.fields !== undefined) {
+      const rawFields: { [key: string]: any } = raw.fields;
       for (const fieldName of Object.keys(rawFields)) {
         const rawField = rawFields[fieldName];
-        let field = this.fields[fieldName];
-        if (field == undefined) {
+        const field = this.fields[fieldName];
+        if (field === undefined) {
           throw new Error(`Cannot find field in class: ${this.name}.${fieldName}`);
         }
         field.parse(rawField);
@@ -87,13 +87,13 @@ export class RosettaJavaClass extends RosettaEntity {
     }
 
     /* METHODS */
-    if (raw['methods'] !== undefined) {
-      const rawMethods = raw['methods'];
+    if (raw.methods !== undefined) {
+      const rawMethods = raw.methods;
       for (const rawMethod of rawMethods) {
         const method = new RosettaJavaMethod(rawMethod);
         const { name: methodName } = method;
-        let cluster: RosettaJavaMethodCluster = this.methods[methodName];
-        if (this.methods[methodName] == undefined) {
+        const cluster: RosettaJavaMethodCluster = this.methods[methodName];
+        if (this.methods[methodName] === undefined) {
           throw new Error(`Cannot find method in class: ${this.name}.${methodName}`);
         }
         cluster.add(method);
@@ -101,20 +101,19 @@ export class RosettaJavaClass extends RosettaEntity {
     }
 
     /* CONSTRUCTORS */
-    if (raw['constructors'] !== undefined) {
-      const rawConstructors = raw['constructors'];
+    if (raw.constructors !== undefined) {
+      const rawConstructors = raw.constructors;
       for (const rawConstructor of rawConstructors) {
-        const rawParameterCount = rawConstructor['parameters'] != undefined ? rawConstructor['parameters'].length : 0;
+        const rawParameterCount = rawConstructor.parameters !== undefined ? rawConstructor.parameters.length : 0;
         let foundConstructor: RosettaJavaConstructor | undefined;
-        for (let index = 0; index < this.constructors.length; index++) {
-          const nextConstructor = this.constructors[index];
+        for (const nextConstructor of this.constructors) {
           const nextParameterCount = nextConstructor.parameters.length;
           if (rawParameterCount === nextParameterCount) {
             foundConstructor = nextConstructor;
             break;
           }
         }
-        if (foundConstructor == undefined) {
+        if (foundConstructor === undefined) {
           throw new Error(`Class Constructor ${this.name} not found with param count: ${rawParameterCount}`);
         }
         foundConstructor.parse(rawConstructor);

@@ -25,8 +25,8 @@ export class RosettaFile extends RosettaEntity {
     Assert.assertNonNull(rosetta, 'rosetta');
 
     /* NAMESPACES */
-    if (raw['namespaces'] !== undefined) {
-      const rawNamespaces = raw['namespaces'];
+    if (raw.namespaces !== undefined) {
+      const rawNamespaces = raw.namespaces;
       for (const name of Object.keys(rawNamespaces)) {
         const rawNamespace = rawNamespaces[name];
         let namespace = rosetta.namespaces[name];
@@ -43,8 +43,8 @@ export class RosettaFile extends RosettaEntity {
     }
 
     /* (Tables) */
-    if (raw['tables'] !== undefined) {
-      const rawTables = raw['tables'];
+    if (raw.tables !== undefined) {
+      const rawTables = raw.tables;
       for (const name of Object.keys(rawTables)) {
         const rawTable = rawTables[name];
         let table = rosetta.tables[name];
@@ -61,8 +61,8 @@ export class RosettaFile extends RosettaEntity {
     }
 
     /* (Functions) */
-    if (raw['functions'] !== undefined) {
-      const rawFunctions = raw['functions'];
+    if (raw.functions !== undefined) {
+      const rawFunctions = raw.functions;
       for (const name of Object.keys(rawFunctions)) {
         const rawFunction = rawFunctions[name];
         let func = rosetta.functions[name];
@@ -79,8 +79,8 @@ export class RosettaFile extends RosettaEntity {
     }
 
     /* (Values) */
-    if (raw['values'] !== undefined) {
-      const rawValues = raw['values'];
+    if (raw.values !== undefined) {
+      const rawValues = raw.values;
       for (const name of Object.keys(rawValues)) {
         const rawValue = rawValues[name];
         let value = rosetta.values[name];
@@ -96,8 +96,8 @@ export class RosettaFile extends RosettaEntity {
     }
 
     /* (Lua Classes) */
-    if (raw['luaClasses'] !== undefined) {
-      const rawLuaClasses = raw['luaClasses'];
+    if (raw.luaClasses !== undefined) {
+      const rawLuaClasses = raw.luaClasses;
       for (const name of Object.keys(rawLuaClasses)) {
         const rawLuaClass = rawLuaClasses[name];
         let luaClass = rosetta.luaClasses[name];

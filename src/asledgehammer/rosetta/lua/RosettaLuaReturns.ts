@@ -7,9 +7,9 @@ export class RosettaLuaReturns extends RosettaEntity {
   constructor(raw: { [key: string]: any }) {
     super(raw);
 
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       let type = this.readString('type');
-      if (type == undefined) type = 'any';
+      if (type === undefined) type = 'any';
       this.type = type;
     } else {
       this.type = 'any';
@@ -19,7 +19,7 @@ export class RosettaLuaReturns extends RosettaEntity {
 
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
-    if (raw['type'] != undefined) {
+    if (raw.type !== undefined) {
       this.type = this.readRequiredString('type', raw);
     }
   }

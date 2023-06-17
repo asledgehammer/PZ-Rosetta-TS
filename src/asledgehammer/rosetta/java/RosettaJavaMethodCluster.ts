@@ -12,7 +12,7 @@ export class RosettaJavaMethodCluster {
   }
 
   add(method: RosettaJavaMethod) {
-    let indexOf = this.methods.indexOf(method);
+    const indexOf = this.methods.indexOf(method);
     if (indexOf !== -1) {
       this.methods[indexOf].parse(method.raw);
       return;

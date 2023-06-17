@@ -29,14 +29,14 @@ export class RosettaPatch {
 
     const patch = JSON.parse(fs.readFileSync(pathPatchJSON).toString());
 
-    if (patch['name'] == undefined) {
+    if (patch.name === undefined) {
       this.valid = false;
       this.name = '';
       this.version = '';
       return;
     }
 
-    if (patch['version'] == undefined) {
+    if (patch.version === undefined) {
       this.valid = false;
       this.name = '';
       this.version = '';

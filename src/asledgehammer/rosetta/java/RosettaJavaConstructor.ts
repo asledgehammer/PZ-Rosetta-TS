@@ -25,8 +25,8 @@ export class RosettaJavaConstructor extends RosettaEntity {
     this.modifiers = this.readModifiers();
 
     /* PARAMETERS */
-    if (raw['parameters'] !== undefined) {
-      const rawParameters: { [key: string]: any }[] = raw['parameters'];
+    if (raw.parameters !== undefined) {
+      const rawParameters: { [key: string]: any }[] = raw.parameters;
       for (const rawParameter of rawParameters) {
         const parameter = new RosettaJavaParameter(rawParameter);
         this.parameters.push(parameter);
@@ -39,8 +39,8 @@ export class RosettaJavaConstructor extends RosettaEntity {
     this.notes = this.readNotes(raw);
 
     /* PARAMETERS */
-    if (raw['parameters'] !== undefined) {
-      const rawParameters: { [key: string]: any }[] = raw['parameters'];
+    if (raw.parameters !== undefined) {
+      const rawParameters: { [key: string]: any }[] = raw.parameters;
 
       /*
        * (To prevent deep-logic issues, check to see if Rosetta's parameters match the length of
@@ -53,8 +53,7 @@ export class RosettaJavaConstructor extends RosettaEntity {
       }
 
       for (let index = 0; index < rawParameters.length; index++) {
-        let parameter = this.parameters[index];
-        parameter.parse(rawParameters[index]);
+        this.parameters[index].parse(rawParameters[index]);
       }
     }
   }

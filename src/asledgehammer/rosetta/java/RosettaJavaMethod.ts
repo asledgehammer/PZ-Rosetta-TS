@@ -22,19 +22,18 @@ export class RosettaJavaMethod extends RosettaEntity {
     this.modifiers = this.readModifiers();
 
     /* PARAMETERS */
-    if (raw['parameters'] !== undefined) {
-      const rawParameters: { [key: string]: any }[] = raw['parameters'];
-      for (let index = 0; index < rawParameters.length; index++) {
-        const parameter = new RosettaJavaParameter(rawParameters[index]);
-        this.parameters.push(parameter);
+    if (raw.parameters !== undefined) {
+      const rawParameters: { [key: string]: any }[] = raw.parameters;
+      for (const rawParameter of rawParameters) {
+        this.parameters.push(new RosettaJavaParameter(rawParameter));
       }
     }
 
     /* RETURNS */
-    if (raw['returns'] === undefined) {
+    if (raw.returns === undefined) {
       throw new Error(`Method does not have returns definition: ${this.name}`);
     }
-    this.returns = new RosettaJavaReturns(raw['returns']);
+    this.returns = new RosettaJavaReturns(raw.returns);
 
     this.notes = this.readNotes();
   }
@@ -43,8 +42,8 @@ export class RosettaJavaMethod extends RosettaEntity {
     this.notes = this.readNotes(raw);
 
     /* PARAMETERS */
-    if (raw['parameters'] !== undefined) {
-      const rawParameters: { [key: string]: any }[] = raw['parameters'];
+    if (raw.parameters !== undefined) {
+      const rawParameters: { [key: string]: any }[] = raw.parameters;
 
       /*
        * (To prevent deep-logic issues, check to see if Rosetta's parameters match the length of
@@ -57,14 +56,13 @@ export class RosettaJavaMethod extends RosettaEntity {
       }
 
       for (let index = 0; index < rawParameters.length; index++) {
-        let parameter = this.parameters[index];
-        parameter.parse(rawParameters[index]);
+        this.parameters[index].parse(rawParameters[index]);
       }
     }
 
     /* RETURNS */
-    if (raw['returns'] != undefined) {
-      this.returns.parse(raw['returns']);
+    if (raw.returns !== undefined) {
+      this.returns.parse(raw.returns);
     }
   }
 }
