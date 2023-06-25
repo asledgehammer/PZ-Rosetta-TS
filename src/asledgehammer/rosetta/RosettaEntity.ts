@@ -1,11 +1,13 @@
 import * as Assert from '../Assert';
 
-export class RosettaEntity {
+export abstract class RosettaEntity {
   readonly raw: { [key: string]: any };
+  readonly readOnly: boolean;
 
-  constructor(raw: { [key: string]: any }) {
+  constructor(raw: { [key: string]: any }, readonly: boolean = false) {
     Assert.assertNonNull(raw, 'raw');
     this.raw = raw;
+    this.readOnly = readonly;
   }
 
   readModifiers(raw = this.raw): string[] {
@@ -42,4 +44,17 @@ export class RosettaEntity {
     }
     return !!raw[id];
   }
+
+  protected checkReadOnly() {
+    if (this.readOnly) {
+      throw new Error(`The Object '${this.constructor.name}' is read-only.`);
+    }
+  }
+
+  /**
+   * @param patch If true, the exported JSON object will only contain Patch-specific information.
+   *
+   * @returns The JSON of the Rosetta entity.
+   */
+  abstract toJSON(patch: boolean): any;
 }

@@ -26,4 +26,22 @@ export class RosettaJavaField extends RosettaEntity {
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
   }
+
+  toJSON(patch: boolean = false): any {
+    const { name, notes, modifiers, type, deprecated } = this;
+
+    const json: any = {};
+    
+    /* (Properties) */
+    json.name = name;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    if (!patch) {
+      if (modifiers.length) json.modifiers = modifiers;
+      json.deprecated = deprecated;
+      json.type = type.toJSON(patch);
+    }
+
+    return json;
+  }
 }

@@ -4,7 +4,7 @@ import { RosettaEntity } from '../RosettaEntity';
 import { formatName } from '../RosettaUtils';
 
 export class RosettaLuaParameter extends RosettaEntity {
-  readonly name: string;
+  name: string;
   type: string;
   notes: string | undefined;
 
@@ -29,5 +29,18 @@ export class RosettaLuaParameter extends RosettaEntity {
     if (raw.type !== undefined) {
       this.type = this.readRequiredString('type', raw);
     }
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { name, type, notes } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    json.name = name;
+    json.type = type;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    return json;
   }
 }

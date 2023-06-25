@@ -19,4 +19,16 @@ export class RosettaJavaReturns extends RosettaEntity {
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
   }
+
+  toJSON(patch: boolean = false): any {
+    const { type, notes } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    if (!patch) json.type = type;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    return json;
+  }
 }

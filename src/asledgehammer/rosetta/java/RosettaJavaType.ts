@@ -20,4 +20,17 @@ export class RosettaJavaType extends RosettaEntity {
 
     this.full = this.readString('full');
   }
+
+  toJSON(patch: boolean = false): any {
+    const {rawBasic: basic, full} = this;
+
+    const json: any = {};
+
+    if(!patch) {
+      json.basic = basic;
+      json.full = full;
+    }
+
+    return json;
+  }
 }

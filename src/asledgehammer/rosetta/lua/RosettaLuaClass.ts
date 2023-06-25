@@ -13,11 +13,11 @@ export class RosettaLuaClass extends RosettaEntity {
   readonly functions: { [name: string]: RosettaLuaFunction } = {};
   readonly methods: { [name: string]: RosettaLuaFunction } = {};
   readonly fields: { [name: string]: RosettaLuaField } = {};
-  conztructor: RosettaLuaConstructor | undefined;
+  conztructor: RosettaLuaConstructor;
   deprecated: boolean = false;
   notes: string | undefined;
 
-  constructor(name: string, raw: { [key: string]: any }) {
+  constructor(name: string, raw: { [key: string]: any } = {}) {
     super(raw);
 
     Assert.assertNonEmptyString(name, 'name');
@@ -32,6 +32,8 @@ export class RosettaLuaClass extends RosettaEntity {
     if (raw.constructor !== undefined) {
       const rawConstructor = raw.constructor;
       this.conztructor = new RosettaLuaConstructor(this, rawConstructor);
+    } else {
+      this.conztructor = new RosettaLuaConstructor(this);
     }
 
     /* (Methods) */
@@ -119,5 +121,47 @@ export class RosettaLuaClass extends RosettaEntity {
         }
       }
     }
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { fields, functions, methods } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    json.extends = this.extendz !== undefined && this.extendz !== '' ? this.extendz : undefined;
+    json.notes = this.notes !== undefined && this.notes !== '' ? this.notes : undefined;
+    json.deprecated = this.deprecated ? true : undefined;
+
+    /* (Fields) */
+    let keys = Object.keys(fields);
+    if (keys.length) {
+      json.fields = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.fields[key] = fields[key].toJSON(patch);
+    }
+
+    /* (Constructor) */
+    if (this.conztructor !== undefined) {
+      json.constructor = this.conztructor !== undefined ? this.conztructor?.toJSON(patch) : undefined;
+    }
+
+    /* (Methods) */
+    keys = Object.keys(methods);
+    if (keys.length) {
+      json.methods = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.methods[key] = methods[key].toJSON(patch);
+    }
+
+    /* (Functions) */
+    keys = Object.keys(functions);
+    if (keys.length) {
+      json.functions = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.functions[key] = functions[key].toJSON(patch);
+    }
+
+    return json;
   }
 }

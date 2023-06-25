@@ -19,12 +19,14 @@ export class RosettaJavaConstructor extends RosettaEntity {
 
     Assert.assertNonNull(clazz, 'clazz');
 
-    /* PROPERTIES */
     this.clazz = clazz;
+
+    /* (Properties) */
     this.deprecated = this.readBoolean('deprecated') != null;
     this.modifiers = this.readModifiers();
+    this.notes = this.readNotes(raw);
 
-    /* PARAMETERS */
+    /* (Parameters) */
     if (raw.parameters !== undefined) {
       const rawParameters: { [key: string]: any }[] = raw.parameters;
       for (const rawParameter of rawParameters) {
@@ -32,13 +34,13 @@ export class RosettaJavaConstructor extends RosettaEntity {
         this.parameters.push(parameter);
       }
     }
-    this.notes = this.readNotes(raw);
   }
 
   parse(raw: { [key: string]: any }) {
+    /* (Properties) */
     this.notes = this.readNotes(raw);
 
-    /* PARAMETERS */
+    /* (Parameters) */
     if (raw.parameters !== undefined) {
       const rawParameters: { [key: string]: any }[] = raw.parameters;
 
@@ -56,5 +58,26 @@ export class RosettaJavaConstructor extends RosettaEntity {
         this.parameters[index].parse(rawParameters[index]);
       }
     }
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { notes, deprecated, modifiers, parameters } = this;
+
+    const json: any = {};
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    /* (Properties) */
+    if (!patch) {
+      json.deprecated = deprecated;
+      if (modifiers.length) json.modifiers = modifiers;
+    }
+
+    /* (Properties) */
+    if (parameters.length) {
+      json.parameters = [];
+      for (const parameter of parameters) json.parameters.push(parameter.toJSON(patch));
+    }
+
+    return json;
   }
 }

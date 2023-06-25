@@ -21,7 +21,7 @@ import { RosettaLuaField } from './asledgehammer/rosetta/lua/RosettaLuaField';
 import { RosettaLuaParameter } from './asledgehammer/rosetta/lua/RosettaLuaParameter';
 import { RosettaLuaReturns } from './asledgehammer/rosetta/lua/RosettaLuaReturns';
 import { RosettaLuaTable } from './asledgehammer/rosetta/lua/RosettaLuaTable';
-import { RosettaLuaValue } from './asledgehammer/rosetta/lua/RosettaLuaValue';
+import { RosettaLuaTableField } from './asledgehammer/rosetta/lua/RosettaLuaTableField';
 
 export {
   Rosetta,
@@ -42,5 +42,5 @@ export {
   RosettaLuaParameter,
   RosettaLuaReturns,
   RosettaLuaTable,
-  RosettaLuaValue,
+  RosettaLuaField as RosettaLuaValue,
 };

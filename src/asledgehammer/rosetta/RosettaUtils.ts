@@ -51,3 +51,17 @@ export const getFilesFromDir = (dir: string): string[] => {
 
   return fs.readdirSync(dir, { recursive: true }).map((s) => `${dir}/${s}`);
 };
+
+export const mkdirs = (dir: string) => {
+  dir = dir.replace(/\\/g, '/').trim();
+  if (dir.indexOf('/') !== -1) {
+    const split = dir.split('/');
+    let next = '';
+    for (let index = 0; index < split.length; index++) {
+      next += `${split[index]}/`;
+      if (!fs.existsSync(next)) fs.mkdirSync(next);
+    }
+  } else {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+  }
+};

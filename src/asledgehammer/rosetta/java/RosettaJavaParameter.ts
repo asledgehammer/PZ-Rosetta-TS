@@ -6,8 +6,8 @@ import { formatName } from '../RosettaUtils';
 
 export class RosettaJavaParameter extends RosettaEntity {
   readonly type: RosettaJavaType;
-  readonly name: string;
 
+  name: string;
   notes: string | undefined;
 
   constructor(raw: { [key: string]: any }) {
@@ -22,5 +22,18 @@ export class RosettaJavaParameter extends RosettaEntity {
 
   parse(raw: { [key: string]: any }) {
     this.notes = this.readNotes(raw);
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { name, notes, type } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    if (!patch) json.types = type.toJSON(patch);
+    json.name = name;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    return json;
   }
 }

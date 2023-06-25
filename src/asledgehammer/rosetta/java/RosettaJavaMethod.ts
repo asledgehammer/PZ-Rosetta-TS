@@ -65,4 +65,29 @@ export class RosettaJavaMethod extends RosettaEntity {
       this.returns.parse(raw.returns);
     }
   }
+
+  toJSON(patch: boolean = false): any {
+    const { name, deprecated, modifiers, notes, parameters, returns } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    if (!patch) {
+      json.deprecated = deprecated;
+      if (modifiers.length) json.modifiers = modifiers;
+    }
+    json.name = name;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    /* (Parameters) */
+    if (parameters.length) {
+      json.parameters = [];
+      for (const parameter of parameters) json.parameters.push(parameter.toJSON(patch));
+    }
+
+    /* (Returns) */
+    json.returns = returns.toJSON(patch);
+
+    return json;
+  }
 }

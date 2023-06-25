@@ -23,4 +23,16 @@ export class RosettaLuaReturns extends RosettaEntity {
       this.type = this.readRequiredString('type', raw);
     }
   }
+
+  toJSON(patch: boolean = false): any {
+    const { type, notes } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    json.type = type;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    return json;
+  }
 }

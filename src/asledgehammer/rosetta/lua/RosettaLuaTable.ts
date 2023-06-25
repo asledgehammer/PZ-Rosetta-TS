@@ -3,16 +3,16 @@ import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 
 import { RosettaLuaFunction } from './RosettaLuaFunction';
-import { RosettaLuaValue } from './RosettaLuaValue';
+import { RosettaLuaTableField } from './RosettaLuaTableField';
 
 export class RosettaLuaTable extends RosettaEntity {
-  readonly values: { [id: string]: RosettaLuaValue } = {};
+  readonly fields: { [id: string]: RosettaLuaTableField } = {};
   readonly tables: { [id: string]: RosettaLuaTable } = {};
   readonly functions: { [id: string]: RosettaLuaFunction } = {};
   readonly name: string;
   notes: string | undefined;
 
-  constructor(name: string, raw: { [key: string]: any }) {
+  constructor(name: string, raw: { [key: string]: any } = {}) {
     super(raw);
 
     Assert.assertNonEmptyString(name, 'name');
@@ -45,8 +45,8 @@ export class RosettaLuaTable extends RosettaEntity {
       const rawValues: { [key: string]: any } = raw.values;
       for (const name2 of Object.keys(rawValues)) {
         const rawValue = rawValues[name2];
-        const value = new RosettaLuaValue(name2, rawValue);
-        this.values[value.name] = this.values[name2] = value;
+        const value = new RosettaLuaTableField(name2, rawValue);
+        this.fields[value.name] = this.fields[name2] = value;
       }
     }
   }
@@ -89,14 +89,49 @@ export class RosettaLuaTable extends RosettaEntity {
       const rawValues: { [key: string]: any } = raw.values;
       for (const name of Object.keys(rawValues)) {
         const rawValue = rawValues[name];
-        let value = this.values[name];
+        let value = this.fields[name];
         if (value === undefined) {
-          value = new RosettaLuaValue(name, rawValue);
+          value = new RosettaLuaTableField(name, rawValue);
         } else {
           value.parse(rawValue);
         }
-        this.values[value.name] = this.values[name] = value;
+        this.fields[value.name] = this.fields[name] = value;
       }
     }
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { fields, tables, functions, name, notes } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    /* (Fields) */
+    let keys = Object.keys(fields);
+    if (keys.length) {
+      json.fields = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.fields[key] = fields[key].toJSON(patch);
+    }
+
+    /* (Functions) */
+    keys = Object.keys(functions);
+    if (keys.length) {
+      json.functions = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.functions[key] = functions[key].toJSON(patch);
+    }
+
+    /* (Tables) */
+    keys = Object.keys(tables);
+    if (keys.length) {
+      json.tables = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.tables[key] = tables[key].toJSON(patch);
+    }
+
+    return json;
   }
 }

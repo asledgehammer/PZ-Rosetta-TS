@@ -12,17 +12,18 @@ export class RosettaLuaFunction extends RosettaEntity {
   notes: string | undefined;
   deprecated: boolean | undefined;
 
-  constructor(name: string, raw: { [key: string]: any }) {
+  constructor(name: string, raw: { [key: string]: any } = {}) {
     super(raw);
 
     Assert.assertNonEmptyString(name, 'name');
+
     this.name = formatName(name);
     this.deprecated = this.readBoolean('deprecated') != null;
 
-    /* PROPERTIES */
+    /* (Properties) */
     this.notes = this.readNotes();
 
-    /* PARAMETERS */
+    /* (Parameters) */
     if (raw.parameters !== undefined) {
       const rawParameters: { [key: string]: any }[] = raw.parameters;
       for (const rawParameter of rawParameters) {
@@ -31,7 +32,7 @@ export class RosettaLuaFunction extends RosettaEntity {
       }
     }
 
-    /* RETURNS */
+    /* (Returns) */
     if (raw.returns === undefined) {
       throw new Error(`Method does not have returns definition: ${this.name}`);
     }
@@ -39,10 +40,10 @@ export class RosettaLuaFunction extends RosettaEntity {
   }
 
   parse(raw: { [key: string]: any }) {
-    /* PROPERTIES */
+    /* (Properties) */
     this.notes = this.readNotes(raw);
 
-    /* PARAMETERS */
+    /* (Parameters) */
     if (raw.parameters !== undefined) {
       const rawParameters: { [key: string]: any }[] = raw.parameters;
 
@@ -61,10 +62,31 @@ export class RosettaLuaFunction extends RosettaEntity {
       }
     }
 
-    /* RETURNS */
+    /* (Returns) */
     if (raw.returns === undefined) {
       throw new Error(`Lua function does not have returns definition: ${this.name}`);
     }
     this.returns.parse(raw.returns);
+  }
+
+  toJSON(patch: boolean = false): any {
+    const { name, deprecated, notes, parameters, returns } = this;
+
+    const json: any = {};
+
+    /* (Properties) */
+    json.deprecated = this.deprecated ? true : undefined;
+    json.notes = notes !== undefined && notes !== '' ? notes : undefined;
+
+    /* (Parameters) */
+    if (parameters.length) {
+      json.parameters = [];
+      for (const parameter of parameters) json.parameters.push(parameter.toJSON(patch));
+    }
+
+    /* (Returns) */
+    json.returns = returns.toJSON(patch);
+
+    return json;
   }
 }
