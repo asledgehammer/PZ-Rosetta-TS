@@ -52,35 +52,35 @@ export class Rosetta {
   }
 
   private loadJSON(): boolean {
-    const dirJSON = `${this.dir}/json`;
-    if (!fs.existsSync(dirJSON)) {
+    const pathJSON = `${this.dir}/json`;
+    if (!fs.existsSync(pathJSON)) {
       return false;
-    } else if (!fs.statSync(dirJSON).isDirectory()) {
-      throw new Error(`Path isn't directory: ${dirJSON}`);
+    } else if (!fs.statSync(pathJSON).isDirectory()) {
+      throw new Error(`Path isn't directory: ${pathJSON}`);
     }
-    const files = getFilesFromDir(dirJSON);
+    const files = getFilesFromDir(pathJSON);
     for (const file of files) {
       const fileInfo: RosettaFileInfo = { uri: file, type: 'json' };
       const raw = JSON.parse(`${fs.readFileSync(file)}`);
       const rFile = new RosettaFile(this, fileInfo, raw, true);
-      this.files[RosettaFile.asFileID(file)] = rFile;
+      this.files[RosettaFile.asFileID(file.replace(pathJSON, ''))] = rFile;
     }
     return true;
   }
 
   private loadYAML(): boolean {
-    const dirYAML = `${this.dir}/yml`;
-    if (!fs.existsSync(dirYAML)) {
+    const pathYAML = `${this.dir}/yml`;
+    if (!fs.existsSync(pathYAML)) {
       return false;
-    } else if (!fs.statSync(dirYAML).isDirectory()) {
-      throw new Error(`Path isn't directory: ${dirYAML}`);
+    } else if (!fs.statSync(pathYAML).isDirectory()) {
+      throw new Error(`Path isn't directory: ${pathYAML}`);
     }
-    const files = getFilesFromDir(dirYAML);
+    const files = getFilesFromDir(pathYAML);
     for (const file of files) {
       const fileInfo: RosettaFileInfo = { uri: file, type: 'yml' };
       const raw = YAML.parse(`${fs.readFileSync(file)}`);
       const rFile = new RosettaFile(this, fileInfo, raw, true);
-      this.files[RosettaFile.asFileID(file)] = rFile;
+      this.files[RosettaFile.asFileID(file.replace(pathYAML, ''))] = rFile;
     }
     return true;
   }

@@ -1,12 +1,10 @@
 import * as fs from 'fs';
+import * as YAML from 'yaml';
 import * as Assert from '../Assert';
 
-import * as YAML from 'yaml';
-
-import { JSON_PATCH_SCHEMA_URL, JSON_SCHEMA_URL, Rosetta } from './Rosetta';
+import { JSON_PATCH_SCHEMA_URL, Rosetta } from './Rosetta';
 import { RosettaEntity } from './RosettaEntity';
 
-import { RosettaJavaNamespace } from './java/RosettaJavaNamespace';
 import { RosettaLuaFunction } from './lua/RosettaLuaFunction';
 import { RosettaLuaTable } from './lua/RosettaLuaTable';
 import { RosettaLuaTableField } from './lua/RosettaLuaTableField';
@@ -15,6 +13,7 @@ import { RosettaFileInfo } from './RosettaFileInfo';
 import { mkdirs } from './RosettaUtils';
 import { JavaNamespacePatch } from './java/patch/JavaNamespacePatch';
 import { JavaClassPatch } from './java/patch/JavaClassPatch';
+import { RosettaFile } from './RosettaFile';
 
 /**
  * **RosettaFile**
@@ -34,6 +33,7 @@ export class RosettaPatchFile extends RosettaEntity {
   /** The internal file identifier in Rosetta. */
   readonly id: string;
   readonly fileInfo: RosettaFileInfo;
+  
   readonly rosetta: Rosetta;
 
   constructor(rosetta: Rosetta, fileInfo: RosettaFileInfo, raw: { [key: string]: any } = {}, readOnly: boolean) {
@@ -44,7 +44,7 @@ export class RosettaPatchFile extends RosettaEntity {
     Assert.assertNonNull(rosetta, 'rosetta');
 
     this.fileInfo = fileInfo;
-    this.id = RosettaPatchFile.asFileID(fileInfo.uri);
+    this.id = RosettaFile.asFileID(fileInfo.uri);
 
     /* NAMESPACES */
     if (raw.namespaces !== undefined) {
@@ -320,38 +320,5 @@ export class RosettaPatchFile extends RosettaEntity {
     }
 
     return json;
-  }
-
-  /**
-   * Transforms a raw path URI to a file identifier by:
-   * - Forcing all lower-case lettering.
-   * - Forces all directory delimiters to be `/`.
-   * - Removes `/` at the beginning of the URI.
-   * - Removes `json/` and `yml/` at the beginning of the URI.
-   * - Removes '.ext' from the end of the URI.
-   *
-   * @param path The raw path URI to transform.
-   * @returns The transformed path URI as a file identifier.
-   */
-  static asFileID(path: string): string {
-    path = path.toLowerCase().trim().replace('/\\/g', '/');
-
-    /* ('/' check at beginning of path) */
-    if (path.indexOf('/') === 0) path = path.substring(1);
-
-    /* ('json/' check at beginning of path) */
-    if (path.indexOf('json/') === 0) path = path.substring('json/'.length);
-
-    /* ('yml/' check at beginning of path) */
-    if (path.indexOf('yml/') === 0) path = path.substring('yml/'.length);
-
-    // (File extension check) */
-    if (path.indexOf('.') !== -1) {
-      const split = path.split('.');
-      split.pop();
-      path = split.join('.');
-    }
-
-    return path;
   }
 }

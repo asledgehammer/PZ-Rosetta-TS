@@ -349,7 +349,9 @@ export class RosettaFile extends RosettaEntity {
    * @returns The transformed path URI as a file identifier.
    */
   static asFileID(path: string): string {
-    path = path.toLowerCase().trim().replace('/\\/g', '/');
+    path = path.toLowerCase().trim();
+
+    while (path.indexOf('\\') !== -1) path = path.replace('\\', '/');
 
     /* ('/' check at beginning of path) */
     if (path.indexOf('/') === 0) path = path.substring(1);
@@ -361,11 +363,10 @@ export class RosettaFile extends RosettaEntity {
     if (path.indexOf('yml/') === 0) path = path.substring('yml/'.length);
 
     // (File extension check) */
-    if (path.indexOf('.') !== -1) {
-      const split = path.split('.');
-      split.pop();
-      path = split.join('.');
-    }
+    if (path.indexOf('.yml') !== -1) path = path.substring(0, path.length - '.yml'.length);
+    if (path.indexOf('.yaml') !== -1) path = path.substring(0, path.length - '.yaml'.length);
+    if (path.indexOf('.json') !== -1) path = path.substring(0, path.length - '.json'.length);
+    if (path.indexOf('.jsonc') !== -1) path = path.substring(0, path.length - '.jsonc'.length);
 
     return path;
   }

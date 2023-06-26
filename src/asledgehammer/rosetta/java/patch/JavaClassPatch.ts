@@ -93,7 +93,6 @@ export class JavaClassPatch implements JSONSerializable {
       const jConstructors = [];
       for (const conztructor of constructors) {
         const jConstructor = conztructor.toJSON();
-        console.log(Object.keys(jConstructor).length);
         if (!isEmptyObject(jConstructor)) jConstructors.push(jConstructor);
       }
       if (jConstructors.length !== 0) {

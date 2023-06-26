@@ -7,10 +7,11 @@ import { Rosetta } from './Rosetta';
 import { RosettaPatchConfiguration } from './RosettaPatchConfiguration';
 import { RosettaFileInfo } from './RosettaFileInfo';
 import { RosettaPatchFile } from './RosettaPatchFile';
+import { RosettaFile } from './RosettaFile';
 
 /**
  * **RosettaPatch**
- * 
+ *
  * @author Jab
  */
 export class RosettaPatch {
@@ -92,15 +93,7 @@ export class RosettaPatch {
         const raw = JSON.parse(json);
         const rFile = new RosettaPatchFile(this.rosetta, fileInfo, raw, false);
 
-        let path = file.toLowerCase();
-        // Remove the file extension for the path ID.
-        if (path.indexOf('.') !== -1) {
-          const split = path.split('.');
-          split.pop();
-          path = split.join('.');
-        }
-
-        this.files[path] = rFile;
+        this.files[RosettaFile.asFileID(file.replace(pathJSON, ''))] = rFile;
       }
     }
   }
@@ -117,15 +110,7 @@ export class RosettaPatch {
         const raw = YAML.parse(yaml);
         const rFile = new RosettaPatchFile(this.rosetta, fileInfo, raw, false);
 
-        let path = file.toLowerCase();
-        // Remove the file extension for the path ID.
-        if (path.indexOf('.') !== -1) {
-          const split = path.split('.');
-          split.pop();
-          path = split.join('.');
-        }
-
-        this.files[path] = rFile;
+        this.files[RosettaFile.asFileID(file.replace(pathYAML, ''))] = rFile;
       }
     }
   }
@@ -181,7 +166,7 @@ export class RosettaPatch {
    * @returns The file in the patch. (If exists)
    */
   getFile(path: string): RosettaPatchFile | undefined {
-    return this.files[RosettaPatchFile.asFileID(path)];
+    return this.files[RosettaFile.asFileID(path)];
   }
 
   /**
