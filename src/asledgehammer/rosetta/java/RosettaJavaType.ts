@@ -1,5 +1,10 @@
 import { RosettaEntity } from '../RosettaEntity';
 
+/**
+ * **RosettaJavaType**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaType extends RosettaEntity {
   readonly rawBasic: string;
   readonly basic: string;

@@ -4,6 +4,11 @@ import { RosettaEntity } from '../RosettaEntity';
 import { RosettaJavaType } from './RosettaJavaType';
 import { formatName } from '../RosettaUtils';
 
+/**
+ * **RosettaJavaParameter**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaParameter extends RosettaEntity {
   readonly type: RosettaJavaType;
 

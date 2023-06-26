@@ -2,6 +2,11 @@ import * as Assert from '../../Assert';
 
 import { RosettaJavaMethod } from './RosettaJavaMethod';
 
+/**
+ * **RosettaJavaMethodCluster**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaMethodCluster {
   readonly methods: RosettaJavaMethod[] = [];
   readonly name: string;

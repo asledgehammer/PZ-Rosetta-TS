@@ -5,6 +5,11 @@ import { RosettaEntity } from '../RosettaEntity';
 import { RosettaLuaFunction } from './RosettaLuaFunction';
 import { RosettaLuaTableField } from './RosettaLuaTableField';
 
+/**
+ * **RosettaLuaTable**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaTable extends RosettaEntity {
   readonly fields: { [id: string]: RosettaLuaTableField } = {};
   readonly tables: { [id: string]: RosettaLuaTable } = {};

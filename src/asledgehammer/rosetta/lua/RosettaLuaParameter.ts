@@ -3,6 +3,11 @@ import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 import { formatName } from '../RosettaUtils';
 
+/**
+ * **RosettaLuaParameter**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaParameter extends RosettaEntity {
   name: string;
   type: string;

@@ -3,6 +3,11 @@ import { RosettaEntity } from '../RosettaEntity';
 import { RosettaJavaParameter } from './RosettaJavaParameter';
 import { RosettaJavaReturns } from './RosettaJavaReturns';
 
+/**
+ * **RosettaJavaMethod**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaMethod extends RosettaEntity {
   readonly parameters: RosettaJavaParameter[] = [];
   readonly returns: RosettaJavaReturns;

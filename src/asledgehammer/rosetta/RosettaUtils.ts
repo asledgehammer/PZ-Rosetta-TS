@@ -65,3 +65,7 @@ export const mkdirs = (dir: string) => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
   }
 };
+
+export const isEmptyObject = (object: any): boolean => {
+  return object === undefined || Object.keys(object).length <= 0;
+};

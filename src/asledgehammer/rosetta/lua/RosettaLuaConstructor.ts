@@ -5,6 +5,11 @@ import { RosettaLuaParameter } from './RosettaLuaParameter';
 
 import { RosettaLuaClass } from './RosettaLuaClass';
 
+/**
+ * **RosettaLuaConstructor**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaConstructor extends RosettaEntity {
   readonly parameters: RosettaLuaParameter[] = [];
   readonly clazz: RosettaLuaClass;

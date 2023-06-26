@@ -4,13 +4,18 @@ import * as YAML from 'yaml';
 import { getFilesFromDir } from './RosettaUtils';
 
 import { Rosetta } from './Rosetta';
-import { RosettaFile } from './RosettaFile';
 import { RosettaPatchConfiguration } from './RosettaPatchConfiguration';
 import { RosettaFileInfo } from './RosettaFileInfo';
+import { RosettaPatchFile } from './RosettaPatchFile';
 
+/**
+ * **RosettaPatch**
+ * 
+ * @author Jab
+ */
 export class RosettaPatch {
   /** (Patch Files) */
-  readonly files: { [path: string]: RosettaFile } = {};
+  readonly files: { [path: string]: RosettaPatchFile } = {};
 
   readonly rosetta: Rosetta;
 
@@ -85,7 +90,7 @@ export class RosettaPatch {
         const json = `${fs.readFileSync(file)}`;
         const fileInfo: RosettaFileInfo = { uri: file, type: 'json' };
         const raw = JSON.parse(json);
-        const rFile = new RosettaFile(this.rosetta, fileInfo, raw, false);
+        const rFile = new RosettaPatchFile(this.rosetta, fileInfo, raw, false);
 
         let path = file.toLowerCase();
         // Remove the file extension for the path ID.
@@ -110,7 +115,7 @@ export class RosettaPatch {
         const yaml = `${fs.readFileSync(file)}`;
         const fileInfo: RosettaFileInfo = { uri: file, type: 'yml' };
         const raw = YAML.parse(yaml);
-        const rFile = new RosettaFile(this.rosetta, fileInfo, raw, false);
+        const rFile = new RosettaPatchFile(this.rosetta, fileInfo, raw, false);
 
         let path = file.toLowerCase();
         // Remove the file extension for the path ID.
@@ -165,8 +170,8 @@ export class RosettaPatch {
    * @param info
    * @returns
    */
-  createFile(info: RosettaFileInfo): RosettaFile {
-    const file = new RosettaFile(this.rosetta, info, {}, false);
+  createFile(info: RosettaFileInfo): RosettaPatchFile {
+    const file = new RosettaPatchFile(this.rosetta, info, {}, false);
     this.files[file.id] = file;
     return file;
   }
@@ -175,8 +180,8 @@ export class RosettaPatch {
    * @param path The file's identifier. (See {@link RosettaFile.asFileID() RosettaFile.asFileID(path)} for more info)
    * @returns The file in the patch. (If exists)
    */
-  getFile(path: string): RosettaFile | undefined {
-    return this.files[RosettaFile.asFileID(path)];
+  getFile(path: string): RosettaPatchFile | undefined {
+    return this.files[RosettaPatchFile.asFileID(path)];
   }
 
   /**

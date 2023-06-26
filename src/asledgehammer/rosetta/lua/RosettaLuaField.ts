@@ -1,12 +1,17 @@
 import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 
+/**
+ * **RosettaLuaField**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaField extends RosettaEntity {
   readonly name: string;
   type: string;
   notes: string | undefined;
 
-  constructor(name: string, raw: { [key: string]: any }) {
+  constructor(name: string, raw: { [key: string]: any } = {}) {
     super(raw);
     Assert.assertNonEmptyString(name, 'name');
     this.name = name;

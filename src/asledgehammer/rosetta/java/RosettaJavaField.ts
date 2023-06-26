@@ -2,6 +2,11 @@ import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 import { RosettaJavaType } from './RosettaJavaType';
 
+/**
+ * **RosettaJavaField**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaField extends RosettaEntity {
   readonly name: string;
   readonly modifiers: string[];

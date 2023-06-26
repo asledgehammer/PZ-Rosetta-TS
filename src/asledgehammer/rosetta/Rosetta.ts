@@ -18,6 +18,11 @@ export let JSON_SCHEMA_URL =
 export let JSON_PATCH_SCHEMA_URL =
   'https://raw.githubusercontent.com/asledgehammer/PZ-Rosetta-Schema/main/rosetta-patch-schema.json';
 
+/**
+ * **Rosetta**
+ * 
+ * @author Jab
+ */
 export class Rosetta {
   readonly patches: { [name: string]: RosettaPatch } = {};
   readonly files: { [path: string]: RosettaFile } = {};

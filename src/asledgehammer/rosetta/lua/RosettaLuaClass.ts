@@ -6,6 +6,11 @@ import { RosettaLuaFunction } from './RosettaLuaFunction';
 import { RosettaLuaField } from './RosettaLuaField';
 import { RosettaLuaConstructor } from './RosettaLuaConstructor';
 
+/**
+ * **RosettaLuaClass**
+ *
+ * @author Jab
+ */
 export class RosettaLuaClass extends RosettaEntity {
   readonly extendz: string | undefined;
   readonly name: string;
@@ -121,6 +126,72 @@ export class RosettaLuaClass extends RosettaEntity {
         }
       }
     }
+  }
+
+  /**
+   * Creates a field in the Lua class.
+   *
+   * @param name The name of the new function.
+   * @returns The new function.
+   *
+   * @throws Error Thrown if:
+   * - A method already exists with the same name in the Lua class.
+   */
+  createField(name: string): RosettaLuaField {
+    const field = new RosettaLuaField(name);
+
+    // (Only check for the file instance)
+    if (this.fields[field.name]) {
+      throw new Error(`A field already exists: ${field.name}`);
+    }
+
+    this.fields[field.name] = field;
+
+    return field;
+  }
+
+  /**
+   * Creates a method in the Lua class.
+   *
+   * @param name The name of the new method.
+   * @returns The new method.
+   *
+   * @throws Error Thrown if:
+   * - A method already exists with the same name in the Lua class.
+   */
+  createMethod(name: string): RosettaLuaFunction {
+    const method = new RosettaLuaFunction(name);
+
+    // (Only check for the file instance)
+    if (this.methods[method.name]) {
+      throw new Error(`A method already exists: ${method.name}`);
+    }
+
+    this.methods[method.name] = method;
+
+    return method;
+  }
+
+  /**
+   * Creates a function in the Lua class.
+   *
+   * @param name The name of the new function.
+   * @returns The new function.
+   *
+   * @throws Error Thrown if:
+   * - A method already exists with the same name in the Lua class.
+   */
+  createFunction(name: string): RosettaLuaFunction {
+    const func = new RosettaLuaFunction(name);
+
+    // (Only check for the file instance)
+    if (this.functions[func.name]) {
+      throw new Error(`A function already exists: ${func.name}`);
+    }
+
+    this.functions[func.name] = func;
+
+    return func;
   }
 
   toJSON(patch: boolean = false): any {

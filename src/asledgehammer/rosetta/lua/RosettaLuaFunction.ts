@@ -5,6 +5,11 @@ import { RosettaEntity } from '../RosettaEntity';
 import { RosettaLuaParameter } from './RosettaLuaParameter';
 import { RosettaLuaReturns } from './RosettaLuaReturns';
 
+/**
+ * **RosettaLuaFunction**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaFunction extends RosettaEntity {
   readonly name: string;
   parameters: RosettaLuaParameter[] = [];
@@ -69,8 +74,22 @@ export class RosettaLuaFunction extends RosettaEntity {
     this.returns.parse(raw.returns);
   }
 
+  /**
+   * Adds a parameter to the function.
+   *
+   * @param name The name of the parameter to display.
+   * @param type (Optional) The type of parameter to provide. (Default: `any`)
+   * @param notes (Optional) Notes on the parameter. (Default: ``)
+   * @returns The new parameter.
+   */
+  addParameter(name: string, type: string = 'any', notes: string = ''): RosettaLuaParameter {
+    const parameter = new RosettaLuaParameter({ name, type, notes });
+    this.parameters.push(parameter);
+    return parameter;
+  }
+
   toJSON(patch: boolean = false): any {
-    const { name, deprecated, notes, parameters, returns } = this;
+    const { notes, parameters, returns } = this;
 
     const json: any = {};
 

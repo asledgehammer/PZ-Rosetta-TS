@@ -13,15 +13,17 @@ import { RosettaLuaTableField } from './lua/RosettaLuaTableField';
 import { RosettaLuaClass } from './lua/RosettaLuaClass';
 import { RosettaFileInfo } from './RosettaFileInfo';
 import { mkdirs } from './RosettaUtils';
+import { JavaNamespacePatch } from './java/patch/JavaNamespacePatch';
+import { JavaClassPatch } from './java/patch/JavaClassPatch';
 
 /**
  * **RosettaFile**
  *
  * @author Jab
  */
-export class RosettaFile extends RosettaEntity {
+export class RosettaPatchFile extends RosettaEntity {
   /* (Java) */
-  readonly namespaces: { [name: string]: RosettaJavaNamespace } = {};
+  readonly namespaces: { [name: string]: JavaNamespacePatch } = {};
 
   /* (Lua) */
   readonly luaClasses: { [name: string]: RosettaLuaClass } = {};
@@ -32,29 +34,25 @@ export class RosettaFile extends RosettaEntity {
   /** The internal file identifier in Rosetta. */
   readonly id: string;
   readonly fileInfo: RosettaFileInfo;
+  readonly rosetta: Rosetta;
 
   constructor(rosetta: Rosetta, fileInfo: RosettaFileInfo, raw: { [key: string]: any } = {}, readOnly: boolean) {
     super(raw, readOnly);
 
+    this.rosetta = rosetta;
+
     Assert.assertNonNull(rosetta, 'rosetta');
 
     this.fileInfo = fileInfo;
-    this.id = RosettaFile.asFileID(fileInfo.uri);
+    this.id = RosettaPatchFile.asFileID(fileInfo.uri);
 
     /* NAMESPACES */
     if (raw.namespaces !== undefined) {
       const rawNamespaces = raw.namespaces;
       for (const name of Object.keys(rawNamespaces)) {
         const rawNamespace = rawNamespaces[name];
-        let namespace = rosetta.namespaces[name];
-
-        if (namespace == null) {
-          namespace = new RosettaJavaNamespace(name, rawNamespace);
-          rosetta.namespaces[namespace.name] = rosetta.namespaces[name] = namespace;
-        } else {
-          namespace.parse(rawNamespace);
-        }
-
+        rawNamespace.name = name;
+        const namespace = new JavaNamespacePatch(rawNamespace);
         this.namespaces[namespace.name] = this.namespaces[name] = namespace;
       }
     }
@@ -137,23 +135,27 @@ export class RosettaFile extends RosettaEntity {
    * @returns The new Java namespace.
    *
    * @throws Error Thrown if:
-   * - The object is in 'read-only' mode.
    * - A global Lua field already exists with the same name in the patch.
    */
-  createNamespace(name: string): RosettaJavaNamespace {
-    /* (Make sure the object can be modified) */
-    this.checkReadOnly();
-
-    const namespace = new RosettaJavaNamespace(name);
+  createNamespace(name: string): JavaNamespacePatch {
+    const namespace = this.rosetta.namespaces[name];
 
     // (Only check for the file instance)
-    if (this.namespaces[namespace.name]) {
-      throw new Error(`A Java namespace already exists: ${namespace.name}`);
+    if (this.namespaces[name]) {
+      throw new Error(`A Java namespace already exists: ${name}`);
     }
 
-    this.namespaces[namespace.name] = namespace;
+    return (this.namespaces[name] = new JavaNamespacePatch(namespace));
+  }
 
-    return namespace;
+  createJavaClass(namespacePath: string, className: string): JavaClassPatch {
+    const rNamespace = this.rosetta.namespaces[namespacePath];
+    let namespace = this.namespaces[namespacePath];
+    if (namespace === undefined) {
+      namespace = this.namespaces[namespacePath] = new JavaNamespacePatch({ name: namespacePath });
+    }
+
+    return (namespace.classes[className] = rNamespace.createClassPatch(className));
   }
 
   /**
@@ -163,13 +165,9 @@ export class RosettaFile extends RosettaEntity {
    * @returns The new Lua class.
    *
    * @throws Error Thrown if:
-   * - The object is in 'read-only' mode.
    * - A global Lua field already exists with the same name in the patch.
    */
   createLuaClass(name: string): RosettaLuaClass {
-    /* (Make sure the object can be modified) */
-    this.checkReadOnly();
-
     const luaClass = new RosettaLuaClass(name);
 
     // (Only check for the file instance)
@@ -189,13 +187,9 @@ export class RosettaFile extends RosettaEntity {
    * @returns The new Lua table.
    *
    * @throws Error Thrown if:
-   * - The object is in 'read-only' mode.
    * - A global Lua field already exists with the same name in the patch.
    */
   createGlobalLuaTable(name: string): RosettaLuaTable {
-    /* (Make sure the object can be modified) */
-    this.checkReadOnly();
-
     const luaTable = new RosettaLuaTable(name);
 
     // (Only check for the file instance)
@@ -215,13 +209,9 @@ export class RosettaFile extends RosettaEntity {
    * @returns The new global Lua function.
    *
    * @throws Error Thrown if:
-   * - The object is in 'read-only' mode.
    * - A global Lua field already exists with the same name in the patch.
    */
   createGlobalLuaFunction(name: string): RosettaLuaFunction {
-    /* (Make sure the object can be modified) */
-    this.checkReadOnly();
-
     const luaFunction = new RosettaLuaFunction(name);
 
     // (Only check for the file instance)
@@ -241,13 +231,9 @@ export class RosettaFile extends RosettaEntity {
    * @returns The new global Lua field.
    *
    * @throws Error Thrown if:
-   * - The object is in 'read-only' mode.
    * - A global Lua field already exists with the same name in the patch.
    */
   createGlobalLuaField(name: string): RosettaLuaTableField {
-    /* (Make sure the object can be modified) */
-    this.checkReadOnly();
-
     const luaField = new RosettaLuaTableField(name);
 
     // (Only check for the file instance)
@@ -283,14 +269,13 @@ export class RosettaFile extends RosettaEntity {
     const { namespaces, luaClasses, functions, tables, fields } = this;
 
     const json: any = {};
-
     /* (Java) */
     let keys = Object.keys(namespaces);
     if (keys.length) {
       json.namespaces = {};
       keys.sort((a, b) => a.localeCompare(b));
       for (const key of keys) {
-        json.namespaces[key] = namespaces[key].toJSON(patch);
+        json.namespaces[key] = namespaces[key].toJSON();
       }
     }
 

@@ -8,6 +8,11 @@ import { RosettaJavaMethodCluster } from './RosettaJavaMethodCluster';
 import { RosettaJavaMethod } from './RosettaJavaMethod';
 import { RosettaJavaField } from './RosettaJavaField';
 
+/**
+ * **RosettaJavaClass**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaClass extends RosettaEntity {
   readonly fields: { [name: string]: RosettaJavaField } = {};
   readonly methods: { [name: string]: RosettaJavaMethodCluster } = {};

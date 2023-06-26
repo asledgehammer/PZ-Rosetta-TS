@@ -3,7 +3,14 @@ import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 
 import { RosettaJavaClass } from './RosettaJavaClass';
+import { JavaClassPatch } from './patch/JavaClassPatch';
+import { JavaNamespacePatch } from './patch/JavaNamespacePatch';
 
+/**
+ * **RosettaJavaNamespace**
+ *
+ * @author Jab
+ */
 export class RosettaJavaNamespace extends RosettaEntity {
   readonly classes: { [id: string]: RosettaJavaClass } = {};
   readonly name: string;
@@ -52,6 +59,16 @@ export class RosettaJavaNamespace extends RosettaEntity {
       this.classes[clazz.name] = this.classes[clazzName] = clazz;
     }
   }
+
+  createPatch(): JavaNamespacePatch {
+    return new JavaNamespacePatch(this);
+  }
+
+  createClassPatch(name: string): JavaClassPatch {
+    Assert.assertNonEmptyString(name, 'name');
+    return new JavaClassPatch(this.name, this.classes[name]);
+  }
+
 
   toJSON(patch: boolean = false): any {
     const { name, classes } = this;

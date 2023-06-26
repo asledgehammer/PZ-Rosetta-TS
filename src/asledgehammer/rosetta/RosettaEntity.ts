@@ -1,5 +1,10 @@
 import * as Assert from '../Assert';
 
+/**
+ * **RosettaEntity**
+ * 
+ * @author Jab
+ */
 export abstract class RosettaEntity {
   readonly raw: { [key: string]: any };
   readonly readOnly: boolean;

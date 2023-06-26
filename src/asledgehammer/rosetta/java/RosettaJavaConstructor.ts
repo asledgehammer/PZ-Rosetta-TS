@@ -5,6 +5,11 @@ import { RosettaJavaParameter } from './RosettaJavaParameter';
 
 import { RosettaJavaClass } from './RosettaJavaClass';
 
+/**
+ * **RosettaJavaConstructor**
+ * 
+ * @author Jab
+ */
 export class RosettaJavaConstructor extends RosettaEntity {
   readonly parameters: RosettaJavaParameter[] = [];
 

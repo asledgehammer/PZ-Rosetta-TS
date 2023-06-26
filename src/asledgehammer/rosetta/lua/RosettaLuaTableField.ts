@@ -3,6 +3,11 @@ import * as Assert from '../../Assert';
 import { RosettaEntity } from '../RosettaEntity';
 import { formatName } from '../RosettaUtils';
 
+/**
+ * **RosettaLuaTableField**
+ * 
+ * @author Jab
+ */
 export class RosettaLuaTableField extends RosettaEntity {
   readonly name: string;
   type: string;
