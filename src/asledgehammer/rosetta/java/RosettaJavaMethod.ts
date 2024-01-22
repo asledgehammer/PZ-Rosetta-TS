@@ -5,7 +5,7 @@ import { RosettaJavaReturns } from './RosettaJavaReturns';
 
 /**
  * **RosettaJavaMethod**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaMethod extends RosettaEntity {

@@ -7,7 +7,7 @@ import { RosettaLuaClass } from './RosettaLuaClass';
 
 /**
  * **RosettaLuaConstructor**
- * 
+ *
  * @author Jab
  */
 export class RosettaLuaConstructor extends RosettaEntity {

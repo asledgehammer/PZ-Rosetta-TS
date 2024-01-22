@@ -3,7 +3,7 @@ import { RosettaEntity } from '../RosettaEntity';
 
 /**
  * **RosettaLuaField**
- * 
+ *
  * @author Jab
  */
 export class RosettaLuaField extends RosettaEntity {

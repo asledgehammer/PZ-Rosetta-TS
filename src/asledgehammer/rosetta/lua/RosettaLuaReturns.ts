@@ -2,7 +2,7 @@ import { RosettaEntity } from '../RosettaEntity';
 
 /**
  * **RosettaLuaReturns**
- * 
+ *
  * @author Jab
  */
 export class RosettaLuaReturns extends RosettaEntity {

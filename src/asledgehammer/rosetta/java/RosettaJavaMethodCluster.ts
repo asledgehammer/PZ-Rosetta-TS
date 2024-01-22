@@ -4,7 +4,7 @@ import { RosettaJavaMethod } from './RosettaJavaMethod';
 
 /**
  * **RosettaJavaMethodCluster**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaMethodCluster {

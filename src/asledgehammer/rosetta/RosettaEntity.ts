@@ -2,7 +2,7 @@ import * as Assert from '../Assert';
 
 /**
  * **RosettaEntity**
- * 
+ *
  * @author Jab
  */
 export abstract class RosettaEntity {

@@ -20,7 +20,7 @@ export let JSON_PATCH_SCHEMA_URL =
 
 /**
  * **Rosetta**
- * 
+ *
  * @author Jab
  */
 export class Rosetta {

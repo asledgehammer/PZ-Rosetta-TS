@@ -5,7 +5,7 @@ import { formatName } from '../RosettaUtils';
 
 /**
  * **RosettaLuaTableField**
- * 
+ *
  * @author Jab
  */
 export class RosettaLuaTableField extends RosettaEntity {
@@ -40,7 +40,7 @@ export class RosettaLuaTableField extends RosettaEntity {
 
   /**
    * @param patch If true, the exported JSON object will only contain Patch-specific information.
-   * 
+   *
    * @returns The JSON of the Rosetta entity.
    */
   toJSON(patch: boolean = false): any {

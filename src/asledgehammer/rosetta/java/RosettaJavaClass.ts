@@ -10,7 +10,7 @@ import { RosettaJavaField } from './RosettaJavaField';
 
 /**
  * **RosettaJavaClass**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaClass extends RosettaEntity {

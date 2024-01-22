@@ -7,7 +7,7 @@ import { RosettaJavaClass } from './RosettaJavaClass';
 
 /**
  * **RosettaJavaConstructor**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaConstructor extends RosettaEntity {

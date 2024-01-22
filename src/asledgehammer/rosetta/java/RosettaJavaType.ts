@@ -2,7 +2,7 @@ import { RosettaEntity } from '../RosettaEntity';
 
 /**
  * **RosettaJavaType**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaType extends RosettaEntity {
@@ -27,11 +27,11 @@ export class RosettaJavaType extends RosettaEntity {
   }
 
   toJSON(patch: boolean = false): any {
-    const {rawBasic: basic, full} = this;
+    const { rawBasic: basic, full } = this;
 
     const json: any = {};
 
-    if(!patch) {
+    if (!patch) {
       json.basic = basic;
       json.full = full;
     }

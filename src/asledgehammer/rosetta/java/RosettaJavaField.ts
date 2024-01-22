@@ -4,7 +4,7 @@ import { RosettaJavaType } from './RosettaJavaType';
 
 /**
  * **RosettaJavaField**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaField extends RosettaEntity {
@@ -36,7 +36,7 @@ export class RosettaJavaField extends RosettaEntity {
     const { name, notes, modifiers, type, deprecated } = this;
 
     const json: any = {};
-    
+
     /* (Properties) */
     json.name = name;
     json.notes = notes !== undefined && notes !== '' ? notes : undefined;

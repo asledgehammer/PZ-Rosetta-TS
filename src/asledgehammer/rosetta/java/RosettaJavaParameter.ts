@@ -6,7 +6,7 @@ import { formatName } from '../RosettaUtils';
 
 /**
  * **RosettaJavaParameter**
- * 
+ *
  * @author Jab
  */
 export class RosettaJavaParameter extends RosettaEntity {

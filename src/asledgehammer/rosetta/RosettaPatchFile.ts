@@ -33,7 +33,7 @@ export class RosettaPatchFile extends RosettaEntity {
   /** The internal file identifier in Rosetta. */
   readonly id: string;
   readonly fileInfo: RosettaFileInfo;
-  
+
   readonly rosetta: Rosetta;
 
   constructor(rosetta: Rosetta, fileInfo: RosettaFileInfo, raw: { [key: string]: any } = {}, readOnly: boolean) {

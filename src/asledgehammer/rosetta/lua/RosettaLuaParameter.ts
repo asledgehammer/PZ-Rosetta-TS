@@ -5,7 +5,7 @@ import { formatName } from '../RosettaUtils';
 
 /**
  * **RosettaLuaParameter**
- * 
+ *
  * @author Jab
  */
 export class RosettaLuaParameter extends RosettaEntity {

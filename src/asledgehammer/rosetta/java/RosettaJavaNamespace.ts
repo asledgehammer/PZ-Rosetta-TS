@@ -69,7 +69,6 @@ export class RosettaJavaNamespace extends RosettaEntity {
     return new JavaClassPatch(this.name, this.classes[name]);
   }
 
-
   toJSON(patch: boolean = false): any {
     const { name, classes } = this;
 
