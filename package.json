@@ -1,6 +1,6 @@
 {
   "name": "pz-rosetta-ts",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "A TypeScript API for PZ-Rosetta.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

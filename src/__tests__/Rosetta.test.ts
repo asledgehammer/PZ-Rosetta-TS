@@ -15,7 +15,7 @@ test('Create Patch', () => {
 
   Assert.assertNonNull(patch, 'patch');
 
-  const luaFile = patch.createFile({ uri: 'lua/client/ISUI/ISUIElement', type: 'json' });
+  const luaFile = patch.createFile({ uri: 'lua/client/ISUI/ISUIElement', type: 'yml' });
   const luaClass = luaFile.createLuaClass('ISUIElement');
   luaClass.notes = 'This is a class.';
 
