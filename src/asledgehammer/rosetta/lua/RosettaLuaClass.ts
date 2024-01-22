@@ -18,6 +18,7 @@ export class RosettaLuaClass extends RosettaEntity {
   readonly functions: { [name: string]: RosettaLuaFunction } = {};
   readonly methods: { [name: string]: RosettaLuaFunction } = {};
   readonly fields: { [name: string]: RosettaLuaField } = {};
+  readonly values: { [name: string]: RosettaLuaField } = {};
   conztructor: RosettaLuaConstructor;
   deprecated: boolean = false;
   notes: string | undefined;
@@ -68,6 +69,16 @@ export class RosettaLuaClass extends RosettaEntity {
         const rawField = rawFields[name2];
         const field = new RosettaLuaField(name2, rawField);
         this.fields[name2] = this.fields[field.name] = field;
+      }
+    }
+
+    /* (Static Fields) */
+    if (raw.values !== undefined) {
+      const rawValues: { [key: string]: any } = raw.values;
+      for (const name2 of Object.keys(rawValues)) {
+        const rawValue = rawValues[name2];
+        const value = new RosettaLuaField(name2, rawValue);
+        this.values[name2] = this.values[value.name] = value;
       }
     }
   }
@@ -126,16 +137,31 @@ export class RosettaLuaClass extends RosettaEntity {
         }
       }
     }
+
+    /* (Static Fields) */
+    if (raw.values !== undefined) {
+      const rawValues: { [key: string]: any } = raw.values;
+      for (const name of Object.keys(rawValues)) {
+        const rawValue = rawValues[name];
+        let value = this.fields[name];
+        if (value == null) {
+          value = new RosettaLuaField(name, rawValue);
+          this.values[name] = this.values[value.name] = value;
+        } else {
+          value.parse(rawValue);
+        }
+      }
+    }
   }
 
   /**
    * Creates a field in the Lua class.
    *
-   * @param name The name of the new function.
-   * @returns The new function.
+   * @param name The name of the new field.
+   * @returns The new field.
    *
    * @throws Error Thrown if:
-   * - A method already exists with the same name in the Lua class.
+   * - A field already exists with the same name in the Lua class.
    */
   createField(name: string): RosettaLuaField {
     const field = new RosettaLuaField(name);
@@ -148,6 +174,28 @@ export class RosettaLuaClass extends RosettaEntity {
     this.fields[field.name] = field;
 
     return field;
+  }
+
+  /**
+   * Creates a static field (value), in the Lua class.
+   *
+   * @param name The name of the new static field.
+   * @returns The new static field.
+   *
+   * @throws Error Thrown if:
+   * - A static field already exists with the same name in the Lua class.
+   */
+  createValue(name: string): RosettaLuaField {
+    const value = new RosettaLuaField(name);
+
+    // (Only check for the file instance)
+    if (this.values[value.name]) {
+      throw new Error(`A static field (value), already exists: ${value.name}`);
+    }
+
+    this.values[value.name] = value;
+
+    return value;
   }
 
   /**
@@ -195,7 +243,7 @@ export class RosettaLuaClass extends RosettaEntity {
   }
 
   toJSON(patch: boolean = false): any {
-    const { fields, functions, methods } = this;
+    const { fields, functions, methods, values } = this;
 
     const json: any = {};
 
@@ -204,8 +252,16 @@ export class RosettaLuaClass extends RosettaEntity {
     json.notes = this.notes !== undefined && this.notes !== '' ? this.notes : undefined;
     json.deprecated = this.deprecated ? true : undefined;
 
+    /* (Static Fields) */
+    let keys = Object.keys(values);
+    if (keys.length) {
+      json.values = {};
+      keys.sort((a, b) => a.localeCompare(b));
+      for (const key of keys) json.values[key] = values[key].toJSON(patch);
+    }
+
     /* (Fields) */
-    let keys = Object.keys(fields);
+    keys = Object.keys(fields);
     if (keys.length) {
       json.fields = {};
       keys.sort((a, b) => a.localeCompare(b));
