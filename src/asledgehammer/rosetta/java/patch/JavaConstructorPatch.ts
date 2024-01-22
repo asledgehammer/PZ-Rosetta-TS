@@ -29,7 +29,7 @@ export class JavaConstructorPatch implements JSONSerializable {
     const json: any = {};
 
     /* (Parameters) */
-    let jParameters = parameters.length ? parameters.map((p) => p.toJSON()) : undefined;
+    const jParameters = parameters.length ? parameters.map((p) => p.toJSON()) : undefined;
     if (!isEmptyObject(jParameters)) {
       json.parameters = jParameters;
     }

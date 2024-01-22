@@ -34,18 +34,18 @@ export class JavaMethodPatch implements JSONSerializable {
   toJSON(): any {
     const { name, notes, parameters, returns } = this;
 
-    let json: any = {};
+    const json: any = {};
 
     if (notes !== undefined && notes !== '') {
       json.notes = notes;
     }
 
-    let jParameters = parameters.length ? parameters.map((p) => p.toJSON()) : undefined;
+    const jParameters = parameters.length ? parameters.map((p) => p.toJSON()) : undefined;
     if (!isEmptyObject(jParameters)) {
       json.parameters = jParameters;
     }
 
-    let jReturns = returns.toJSON();
+    const jReturns = returns.toJSON();
     if (!isEmptyObject(jReturns)) {
       json.returns = jReturns;
     }

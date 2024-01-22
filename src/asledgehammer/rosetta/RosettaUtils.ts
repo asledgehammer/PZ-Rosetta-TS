@@ -55,10 +55,9 @@ export const getFilesFromDir = (dir: string): string[] => {
 export const mkdirs = (dir: string) => {
   dir = dir.replace(/\\/g, '/').trim();
   if (dir.indexOf('/') !== -1) {
-    const split = dir.split('/');
     let next = '';
-    for (let index = 0; index < split.length; index++) {
-      next += `${split[index]}/`;
+    for (const sub of dir.split('/')) {
+      next += `${sub}/`;
       if (!fs.existsSync(next)) fs.mkdirSync(next);
     }
   } else {

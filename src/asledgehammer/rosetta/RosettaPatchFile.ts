@@ -253,7 +253,7 @@ export class RosettaPatchFile extends RosettaEntity {
     const json = this.toJSON(patch);
     const file = `${dir}/${type}/${uri}.${type}`;
 
-    let split = file.split('/');
+    const split = file.split('/');
     split.pop();
     const parentDir = split.join('/');
     mkdirs(parentDir);

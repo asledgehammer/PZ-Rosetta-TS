@@ -213,7 +213,7 @@ export class RosettaPatch {
       version: patch.version !== undefined ? patch.version.toString() : '1.0.0',
       authors: patch.authors !== undefined ? patch.authors : [],
       description: patch.description !== undefined ? patch.description : '',
-      priority: patch.priority !== undefined ? parseInt(patch.priority.toString()) : 1,
+      priority: patch.priority !== undefined ? parseInt(patch.priority.toString(), 10) : 1,
     };
   }
 }
